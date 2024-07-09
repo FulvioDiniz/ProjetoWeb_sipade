@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Detecção de Boi</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #f4f4f4;
+        min-height: 100vh;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      h1 {
+        color: #333;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      input[type="file"] {
+        display: block;
+        margin: 10px auto;
+      }
+      input[type="submit"] {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Upload uma imagem para detectar bois</h1>
+      <form method="post" enctype="multipart/form-data" action="/upload">
+        <input type="file" name="file" accept="image/*">
+        <input type="submit" value="Upload">
+      </form>
+      {% if filename %}
+      <h2>Imagem Processada:</h2>
+      <img src="{{ url_for('static', filename='processed/' ~ filename) }}" alt="Processed Image">
+      {% endif %}
+    </div>
+  </body>
+</html>
