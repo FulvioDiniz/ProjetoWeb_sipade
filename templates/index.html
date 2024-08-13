@@ -2,67 +2,278 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Detecção de Boi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detecção de Gado - Sipade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Montserrat', sans-serif;
         margin: 0;
         padding: 0;
+        background: linear-gradient(135deg, #ece9e6, #ffffff);
+        color: #333;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      header {
+        width: 100%;
+        padding: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-        background-color: #f4f4f4;
-        min-height: 100vh;
+        background-color: #ffffff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
       }
-      .container {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      .logo {
+        max-width: 80px;
+        height: auto;
+        margin: 0 10px;
+      }
+      .main-content {
+        display: flex;
+        width: 90%;
+        max-width: 1200px;
+        margin: 120px auto 0 auto;
+        flex: 1;
+      }
+      .text-area {
+        flex: 1;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-right: 20px;
+        transition: all 0.3s ease-in-out;
+      }
+      .text-area:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+      .text-area h2 {
+        font-size: 2em;
+        color: #007bff;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+      .text-area p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: #555;
+      }
+      .right-area {
+        flex: 1.5;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .right-area:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+      .right-area h2 {
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: 600;
         text-align: center;
       }
-      h1 {
-        color: #333;
-      }
       form {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        width: 100%;
+        text-align: center;
       }
       input[type="file"] {
         display: block;
-        margin: 10px auto;
+        margin: 15px auto;
+        font-size: 1em;
+        color: #666;
+        cursor: pointer;
       }
       input[type="submit"] {
-        background-color: #007BFF;
+        background-color: #007bff;
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
+        padding: 12px 24px;
+        border-radius: 50px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 15px;
       }
       input[type="submit"]:hover {
         background-color: #0056b3;
+        transform: translateY(-3px);
       }
-      img {
-        max-width: 100%;
-        height: auto;
-        margin-top: 20px;
+      .mural {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        width: 100%;
+      }
+      .mural img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
         border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+      .mural img:hover {
+        transform: scale(1.1);
+      }
+      footer {
+        font-size: 0.9em;
+        color: #888;
+        text-align: center;
+        width: 100%;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 2000; 
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); 
+        padding-top: 60px;
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        position: relative;
+        animation-name: modalopen;
+        animation-duration: 0.4s;
+      }
+      @keyframes modalopen {
+        from {opacity: 0; transform: translateY(-50px);}
+        to {opacity: 1; transform: translateY(0);}
+      }
+      .modal-content img {
+        width: 100%;
+        border-radius: 8px;
+      }
+      .close {
+        color: #aaa;
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .image-info {
+        margin-top: 10px;
+        font-size: 1.2em;
+        color: #333;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Upload uma imagem para detectar bois</h1>
-      <form method="post" enctype="multipart/form-data" action="/upload">
-        <input type="file" name="file" accept="image/*">
-        <input type="submit" value="Upload">
-      </form>
-      {% if filename %}
-      <h2>Imagem Processada:</h2>
-      <img src="{{ url_for('static', filename='processed/' ~ filename) }}" alt="Processed Image">
-      {% endif %}
+    <header>
+      <img src="{{ url_for('static', filename='img/cnpq.png') }}" alt="Logo CNPq" class="logo">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo SIPADE" class="logo">
+      <img src="{{ url_for('static', filename='img/IFTM.png') }}" alt="Logo IFTM" class="logo">
+    </header>
+    
+    <div class="main-content">
+      <div class="text-area">
+        <h2>Sobre o Projeto Sipade</h2>
+        <p>
+          O SIPADE (Sistema de Identificação e Prevenção de Abigeato e Desmatamento) possibilita a implementação de ações precisas para mitigar a degradação das pastagens, além de fornecer dados detalhados sobre os fatores que contribuíram para a deterioração da área avaliada. Este sistema inovador está sendo implantado na região da Bacia do Rio Uberaba, localizada no estado de Minas Gerais, Brasil, promovendo a conservação ambiental e a sustentabilidade na gestão rural.
+        </p>
+      </div>
+      
+      <div class="right-area">
+        <div>
+          <h2>Detecte Gado em Imagens</h2>
+          <form method="post" enctype="multipart/form-data" action="/upload">
+            <input type="file" name="file" accept="image/*">
+            <input type="submit" value="Upload">
+          </form>
+        </div>
+
+        <div>
+          <h3>Últimas Imagens Processadas:</h3>
+          <div class="mural">
+            {% for file_info in latest_files_info %}
+            <img src="{{ url_for('static', filename='processed/' ~ file_info.filename) }}" 
+                 alt="Imagem Processada" 
+                 onclick="openModal('{{ url_for('static', filename='processed/' ~ file_info.filename) }}', '{{ file_info.count }}', '{{ file_info.colors|length }}')">
+            {% endfor %}
+          </div>
+        </div>
+        
+      </div>
     </div>
+    
+    <footer>
+      Sipade - Iniciação Científica 2024
+    </footer>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="Imagem Processada">
+        <div class="image-info">
+          <p id="countInfo"></p>
+          <p id="colorsInfo"></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Open the modal
+      function openModal(imageSrc, count, colors) {
+        document.getElementById("modalImage").src = imageSrc;
+        document.getElementById("countInfo").innerText = "Gado detectado: " + count;
+        document.getElementById("colorsInfo").innerText = "Cores identificadas: " + colors;
+        document.getElementById("imageModal").style.display = "block";
+      }
+
+      // Close the modal
+      function closeModal() {
+        var modal = document.getElementById("imageModal");
+        modal.style.display = "none";
+      }
+
+      // Close the modal when the user clicks anywhere outside of it
+      window.onclick = function(event) {
+        var modal = document.getElementById("imageModal");
+        if (event.target == modal) {
+          closeModal();
+        }
+      }
+    </script>
   </body>
 </html>
